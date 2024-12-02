@@ -1,0 +1,194 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Agendamed API",
+        "description": "",
+        "contact": {
+            "email": "edu-godoi@hotmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3334",
+            "description": "Api Desenvolvimento"
+        }
+    ],
+    "paths": {
+        "/user/register": {
+            "post": {
+                "summary": "Registrar novo usuário",
+                "tags": [
+                    "Register"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Register"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Register"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/auth": {
+            "post": {
+                "summary": "Autenticação de usuário",
+                "tags": [
+                    "Authenticate"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Authenticate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário autenticado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Authenticate"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "responses": {
+            "Unauthorized": {
+                "description": "Não autorizado",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "field": {
+                                        "type": "string",
+                                        "example": "token"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Usuário não autenticado!"
+                                    },
+                                    "statusCode": {
+                                        "type": "integer",
+                                        "example": 401
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "Register": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "email",
+                    "cpf",
+                    "password"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "ID do usuário"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do usuário"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email do usuário"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "description": "CPF do usuário"
+                    },
+                    "role": {
+                        "type": "string",
+                        "description": "Papel do usuário no sistema"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "description": "Senha do usuário"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Data de criação"
+                    }
+                }
+            },
+            "Authenticate": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email do usuário"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "description": "Senha do usuário"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    }
+}

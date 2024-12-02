@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  OPERATOR
+  DOCTOR
+}
+
+model User {
+  id         String    @id @default(uuid())
+  name       String
+  email      String    @unique
+  cpf        String
+  password   String
+  created_at DateTime  @default(now())
+  updated_at DateTime?
+  role       Role
+
+  @@map("users")
+}
+
+model Patient {
+  id           String        @id @default(uuid())
+  name         String
+  cpf          String        @unique
+  email        String
+  phone        String
+  created_at   DateTime      @default(now())
+  updated_at   DateTime?
+  doctor       Doctor?       @relation(fields: [doctorId], references: [id])
+  doctorId     String?
+  appointments Appointment[]
+
+  @@map("patients")
+}
+
+model Specialty {
+  id   String @id @default(uuid())
+  name String
+
+  doctors Doctor[]
+
+  @@map("specialties")
+}
+
+model Doctor {
+  id           String        @id @default(uuid())
+  name         String
+  cpf          String        @unique
+  crm          String
+  created_at   DateTime      @default(now())
+  updated_at   DateTime?
+  specialty    Specialty?    @relation(fields: [specialtyId], references: [id])
+  patients     Patient[]
+  appointments Appointment[]
+  specialtyId  String
+
+  @@map("doctors")
+}
+
+model Appointment {
+  id          String    @id @default(uuid())
+  date        DateTime
+  observation String?
+  created_at  DateTime  @default(now())
+  updated_at  DateTime?
+  patient     Patient   @relation(fields: [patientId], references: [id])
+  patientId   String
+  doctor      Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId    String
+
+  @@map("appointments")
+}
