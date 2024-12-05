@@ -18,7 +18,6 @@ describe("GetAllUsers Use Case", () => {
     it("should be able to list users", async () => {
         const role = "ADMIN";
 
-        // Adicionando usuário 1
         const { user } = await registerUseCase.execute({
             name: "user-1",
             email: "user1@test.com",
@@ -28,7 +27,6 @@ describe("GetAllUsers Use Case", () => {
         });
         expect(user.role).toBe(role);
 
-        // Adicionando usuário 2
         await registerUseCase.execute({
             name: "user-2",
             email: "user2@test.com",
@@ -37,7 +35,6 @@ describe("GetAllUsers Use Case", () => {
             password: "User2@123",
         });
 
-        // Adicionando usuário 3
         await registerUseCase.execute({
             name: "user-3",
             email: "user3@test.com",
@@ -46,7 +43,6 @@ describe("GetAllUsers Use Case", () => {
             password: "User3@123",
         });
 
-        // Obtendo lista de usuários com paginação
         const allUsers = await getAllUsersUseCase.execute({
             take: 2,
             skip: 1,
@@ -54,8 +50,7 @@ describe("GetAllUsers Use Case", () => {
             total: 0
         });
 
-        // Verificações
-        expect(allUsers.total).toBe(3); // Total de usuários no repositório
-        expect(allUsers.users.length).toBe(2); // Tamanho da lista retornada
+        expect(allUsers.total).toBe(3);
+        expect(allUsers.users.length).toBe(2);
     });
 });
