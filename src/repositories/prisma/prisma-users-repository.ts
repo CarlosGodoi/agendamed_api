@@ -2,6 +2,7 @@ import { prisma } from '@/lib/prisma'
 import { UsersRepository } from '../users-repository'
 import { Prisma, User } from '@prisma/client'
 import { IPagination } from '../interfaces/pagination'
+import { AppError } from '@/utils/errors/AppError'
 
 const Pagination = (skip: number, take: number) => {
     const calcSkip = (skip - 1) * take
@@ -107,5 +108,23 @@ export class PrismaUsersRepository implements UsersRepository {
         })
 
         return user
+    }
+
+    async delete(id: string) {
+        const user = await prisma.user.findUnique({
+            where: {
+                id
+            }
+        })
+
+        if (!user) {
+            throw new AppError('error', 'User not found.')
+        }
+
+        await prisma.user.delete({
+            where: {
+                id
+            }
+        })
     }
 }

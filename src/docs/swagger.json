@@ -155,6 +155,45 @@
                     }
                 }
             }
+        },
+        "/user/delete/{id}": {
+            "delete": {
+                "summary": "Delete de usuário",
+                "tags": [
+                    "User"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do usuário",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário deletado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Delete"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -255,6 +294,11 @@
                 "properties": {}
             },
             "User": {
+                "type": "object",
+                "required": [],
+                "properties": {}
+            },
+            "Delete": {
                 "type": "object",
                 "required": [],
                 "properties": {}

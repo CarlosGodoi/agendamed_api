@@ -57,4 +57,8 @@ export class InMemoryUsersRepository implements UsersRepository {
 
         return user || null
     }
+
+    async delete(id: string) {
+        this.items.findIndex((item) => item.id === id)
+    }
 }
