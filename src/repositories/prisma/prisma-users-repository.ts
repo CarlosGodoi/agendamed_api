@@ -25,7 +25,6 @@ interface GetAllParams {
     skip?: number;
     take?: number;
     search?: string;
-    [key: string]: any;
 }
 
 export interface IUsersParamsGetAll extends IPagination {

@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { registerUserRouter } from "./userRegisterRoute";
-import { authRouter } from "./authRoute";
-import { getAllRouter } from "./getAllRoute";
-import { getUserByIdRouter } from "./getUserByIdRoute";
-import { deleteUserRouter } from "./deleteUserRoute";
-import { updateUserRouter } from "./updateUserRoute";
+
+import { authRouter } from "./user/authRoute";
+import { getAllRouter } from "./user/getAllRoute";
+import { getUserByIdRouter } from "./user/getUserByIdRoute";
+import { deleteUserRouter } from "./user/deleteUserRoute";
+import { updateUserRouter } from "./user/updateUserRoute";
+import { registerUserRouter } from "./user/userRegisterRoute";
+import { registerSpecialtyRouter } from "./specialty/registerSpecialtuRoute";
 
 
 const router = Router();
@@ -16,5 +18,6 @@ router.use('/user/:id', getUserByIdRouter);
 router.use('/user', updateUserRouter);
 router.use('/user', deleteUserRouter);
 
+router.use('/specialty', registerSpecialtyRouter)
 
 export { router };

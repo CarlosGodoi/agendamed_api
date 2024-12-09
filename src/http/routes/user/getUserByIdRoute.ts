@@ -1,6 +1,5 @@
+import { getUserById } from "@/http/controller/users/getUserById";
 import { Router } from "express";
-import { getUserById } from "../controller/users/getUserById";
-
 
 const getUserByIdRouter = Router()
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { register } from "../controller/users/register";
-import { validateAuthUser } from "../middlewares/verify-user-role";
+import { validateAuthUser } from "@/http/middlewares/verify-user-role";
+import { register } from "@/http/controller/users/register";
 import { app } from "@/config/app";
 
 const registerUserRouter = Router();

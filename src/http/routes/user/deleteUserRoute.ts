@@ -1,5 +1,5 @@
+import { deleteUser } from "@/http/controller/users/deleteUser";
 import { Router } from "express";
-import { deleteUser } from "../controller/users/deleteUser";
 
 const deleteUserRouter = Router()
 

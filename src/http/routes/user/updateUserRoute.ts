@@ -1,6 +1,5 @@
+import { updateUser } from "@/http/controller/users/updateUser";
 import { Router } from "express";
-import { updateUser } from "../controller/users/updateUser";
-
 
 const updateUserRouter = Router()
 
