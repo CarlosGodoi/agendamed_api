@@ -1,6 +1,8 @@
 import { User, Prisma } from "@prisma/client";
 import { UsersRepository } from "../users-repository";
 import { IPagination } from "../interfaces/pagination";
+import { IUpdatedUserDTO } from "../dto/user-dto";
+import { AppError } from "@/utils/errors/AppError";
 
 export class InMemoryUsersRepository implements UsersRepository {
     public items: User[] = []
@@ -56,6 +58,25 @@ export class InMemoryUsersRepository implements UsersRepository {
         }
 
         return user || null
+    }
+
+    async update(data: IUpdatedUserDTO) {
+        const existingIndex = this.items.findIndex((item) => item.id === data.id)
+
+        if (existingIndex === -1) {
+            throw new AppError('error', `User with ID ${data.id} not found.`)
+        }
+
+        const existingUser = this.items[existingIndex]
+        const updatedUser: User = {
+            ...existingUser,
+            email: data.email || existingUser.email,
+            password: data.password || existingUser.password
+        }
+
+        this.items[existingIndex] = updatedUser
+
+        return updatedUser
     }
 
     async delete(id: string) {

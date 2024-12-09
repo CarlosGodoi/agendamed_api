@@ -21,7 +21,7 @@
 - [x] Usuário não pode se cadastrar com email duplicado
 - [] Somente usuário operador pode cadastrar consultas, especialidades e médicos
 - [] Somente usuário operador pode desabilitar/cancelar consultas
-- [] Somente usuários admin podem cadastrar operadores e admins.
+- [x] Somente usuários admin podem cadastrar operadores e admins.
 
 ## RNFs (Requisitos não-funcionais)
 

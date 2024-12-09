@@ -194,6 +194,54 @@
                     }
                 }
             }
+        },
+        "/user/update/{id}": {
+            "put": {
+                "summary": "Update de usuário",
+                "tags": [
+                    "User"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Update"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do usuário",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Update"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -302,6 +350,25 @@
                 "type": "object",
                 "required": [],
                 "properties": {}
+            },
+            "Update": {
+                "type": "object",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "description": "Email do usuário"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "description": "Senha do usuário"
+                    }
+                }
             }
         },
         "securitySchemes": {

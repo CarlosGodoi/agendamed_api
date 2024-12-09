@@ -3,6 +3,7 @@ import { UsersRepository } from '../users-repository'
 import { Prisma, User } from '@prisma/client'
 import { IPagination } from '../interfaces/pagination'
 import { AppError } from '@/utils/errors/AppError'
+import { IUpdatedUserDTO } from '../dto/user-dto'
 
 const Pagination = (skip: number, take: number) => {
     const calcSkip = (skip - 1) * take
@@ -104,6 +105,21 @@ export class PrismaUsersRepository implements UsersRepository {
         const user = await prisma.user.findFirst({
             where: {
                 id,
+            }
+        })
+
+        return user
+    }
+
+    async update(data: IUpdatedUserDTO) {
+        const user = await prisma.user.update({
+            where: {
+                id: data.id ? data.id : ""
+            },
+            data: {
+                email: data.email,
+                password: data.password,
+                updated_at: new Date()
             }
         })
 
