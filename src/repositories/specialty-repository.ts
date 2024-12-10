@@ -6,5 +6,6 @@ export interface SpecialtiesRepository {
     getAll(data: IPagination): Promise<{ total: number; specialties: Specialty[]; totalPage?: number }>
     getById(id: string): Promise<Specialty | null>
     findById(id: string): Promise<Specialty | null>
+    findByName(name: string): Promise<Specialty | null>
     delete(id: string): Promise<void>
 }

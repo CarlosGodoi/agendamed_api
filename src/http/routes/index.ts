@@ -6,7 +6,7 @@ import { getUserByIdRouter } from "./user/getUserByIdRoute";
 import { deleteUserRouter } from "./user/deleteUserRoute";
 import { updateUserRouter } from "./user/updateUserRoute";
 import { registerUserRouter } from "./user/userRegisterRoute";
-import { registerSpecialtyRouter } from "./specialty/registerSpecialtuRoute";
+import { registerDoctorRouter } from "./doctor/registerDoctorRoute";
 
 
 const router = Router();
@@ -18,6 +18,6 @@ router.use('/user/:id', getUserByIdRouter);
 router.use('/user', updateUserRouter);
 router.use('/user', deleteUserRouter);
 
-router.use('/specialty', registerSpecialtyRouter)
+router.use('/doctor', registerDoctorRouter)
 
 export { router };

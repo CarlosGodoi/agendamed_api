@@ -42,16 +42,6 @@ describe('Update uUser Use Case', () => {
     })
 
     it('it should not be possible to update the datas of a user', async () => {
-        const role = 'ADMIN'
-
-        const newUser = await sut.execute({
-            name: 'user-test',
-            email: 'user.test@test.com',
-            cpf: '009.736.321.11',
-            role: role,
-            password: 'Test@123'
-        })
-
         try {
             await updateUserUseCase.execute({
                 id: 'non-exists',

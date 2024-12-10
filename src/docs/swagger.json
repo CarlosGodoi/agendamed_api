@@ -242,6 +242,43 @@
                     }
                 }
             }
+        },
+        "/doctor/register": {
+            "post": {
+                "summary": "Registrar novo médico",
+                "tags": [
+                    "Register Doctor"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterDoctor"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário registrado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterDoctor"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -367,6 +404,33 @@
                         "type": "string",
                         "format": "password",
                         "description": "Senha do usuário"
+                    }
+                }
+            },
+            "RegisterDoctor": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "cpf",
+                    "crm",
+                    "specialtyName"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do usuário"
+                    },
+                    "cpf": {
+                        "type": "string",
+                        "description": "CPF do usuário"
+                    },
+                    "crm": {
+                        "type": "string",
+                        "description": "CRM do médico"
+                    },
+                    "specialtyName": {
+                        "type": "string",
+                        "description": "Especialidade médica"
                     }
                 }
             }
