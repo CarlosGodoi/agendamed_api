@@ -76,6 +76,16 @@ export class PrismaDoctorsRepository implements DoctorsRepository {
         return doctor
     }
 
+    async findByCpf(cpf: string) {
+        const doctor = await prisma.doctor.findUnique({
+            where: {
+                cpf
+            }
+        })
+
+        return doctor
+    }
+
     async delete(id: string) {
         const doctor = await prisma.doctor.findUnique({
             where: {

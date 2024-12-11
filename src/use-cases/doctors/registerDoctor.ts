@@ -20,6 +20,12 @@ export class RegisterDoctorUseCase {
     async execute({ name, cpf, crm, specialtyId }: IRegisterDoctorUseCaseRequest): Promise<IRegisterDoctorUseCaseResponse> {
 
         try {
+            const doctorWithSameCPF = await this.doctorsRespository.findByCpf(cpf)
+
+            if (doctorWithSameCPF) {
+                throw new AppError('error', 'Doctor with same CPF already exists.')
+            }
+
             const specialtyExists = await this.specialtiesRespository.findById(specialtyId)
 
             if (!specialtyExists) {

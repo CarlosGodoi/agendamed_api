@@ -57,6 +57,16 @@ export class InMemoryDoctorsRepository implements DoctorsRepository {
         return doctor || null
     }
 
+    async findByCpf(cpf: string) {
+        const doctor = this.items.find((item) => item.cpf === cpf)
+
+        if (!cpf) {
+            return null
+        }
+
+        return doctor || null
+    }
+
     async delete(id: string) {
         this.items.findIndex((item) => item.id === id)
     }

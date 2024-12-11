@@ -47,4 +47,29 @@ describe('Register Doctor Use Case', () => {
             expect(error).toBeInstanceOf(AppError)
         }
     })
+
+    it('It should not be possible to register a doctor with the same CPF', async () => {
+        // Primeiro criamos a especialidade
+        const { specialty } = await sut2.execute({
+            name: 'Fonoaudiologia'
+        })
+
+        // Criamos o primeiro médico usando o ID da especialidade que acabamos de criar
+        const { doctor } = await sut.execute({
+            name: 'Doctor test 1',
+            cpf: '887.452.291-02',
+            crm: 'CRM/AL 13422',
+            specialtyId: specialty.id  // Aqui usamos o ID correto da especialidade
+        })
+
+        // Tentamos criar outro médico com o mesmo CPF
+        await expect(() =>
+            sut.execute({
+                name: 'Doctor test 2',
+                cpf: doctor.cpf,
+                crm: 'CRM/AL 13499',
+                specialtyId: specialty.id
+            })
+        ).rejects.toBeInstanceOf(AppError)
+    })
 })
