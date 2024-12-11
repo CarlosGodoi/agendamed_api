@@ -243,6 +243,34 @@
                 }
             }
         },
+        "/specialties": {
+            "get": {
+                "summary": "Listagem de especialidades médicas",
+                "tags": [
+                    "Specialties"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Especialidades listadas com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Specialties"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
         "/doctor/register": {
             "post": {
                 "summary": "Registrar novo médico",
@@ -406,6 +434,11 @@
                         "description": "Senha do usuário"
                     }
                 }
+            },
+            "Specialties": {
+                "type": "object",
+                "required": [],
+                "properties": {}
             },
             "RegisterDoctor": {
                 "type": "object",
