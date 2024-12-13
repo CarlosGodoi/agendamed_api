@@ -1,4 +1,5 @@
-import { getAllSpecialtiesController } from "@/http/controller/doctor/getAllSpecialties";
+
+import { getAllSpecialtiesController } from "@/http/controller/specialty/getAllSpecialties";
 import { Router } from "express";
 
 const getallSpecialtiesRouter = Router();

@@ -9,8 +9,8 @@ export async function getAllUsers(req: Request, res: Response, next: NextFunctio
         const getAllUsersUseCase = makeGetAllUsersUseCase();
 
         const result = await getAllUsersUseCase.execute({
-            skip: skip ? +skip : 1,
             take: take ? +take : 10,
+            skip: skip ? +skip : 1,
             users,
             total,
             totalPage
