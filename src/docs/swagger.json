@@ -307,6 +307,34 @@
                     }
                 }
             }
+        },
+        "/doctors": {
+            "get": {
+                "summary": "Listagem de médicos",
+                "tags": [
+                    "Doctors"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Médicos listados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Doctors"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -466,6 +494,11 @@
                         "description": "Especialidade médica"
                     }
                 }
+            },
+            "Doctors": {
+                "type": "object",
+                "required": [],
+                "properties": {}
             }
         },
         "securitySchemes": {

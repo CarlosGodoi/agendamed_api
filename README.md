@@ -29,4 +29,4 @@
 - [x] As senha devem conter mais de 6 digitos e devem possuir letras, numeros e caracteres especiais
 - [x] Utilizar JWT como forma de autenticação
 - [x] Os Dados devem ser persistidos em banco postgres
-- [] Todas as listas de dados precisam estar paginadas com 10 itens por página
+- [x] Todas as listas de dados precisam estar paginadas com 10 itens por página
