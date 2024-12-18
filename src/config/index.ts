@@ -7,6 +7,8 @@ const envSchema = z.object({
     JWT_REFRESH_SECRET: z.string(),
     PORT: z.coerce.number().default(3334),
     APP_HOST: z.string(),
+    USER_MAIL: z.string(),
+    USER_PASS_MAIL: z.string()
 })
 
 const _env = envSchema.safeParse(process.env)

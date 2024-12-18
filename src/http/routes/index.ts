@@ -10,8 +10,6 @@ import { registerDoctorRouter } from "./doctor/registerDoctorRoute";
 import { getallSpecialtiesRouter } from "./specialty/getAllSpecialtiesRoute";
 import { getallDoctorsRouter } from "./doctor/getAllDoctorsRoute";
 
-
-
 const router = Router();
 
 router.use('/user', registerUserRouter);
@@ -25,5 +23,6 @@ router.use('/specialties', getallSpecialtiesRouter)
 
 router.use('/doctor', registerDoctorRouter)
 router.use('/doctors', getallDoctorsRouter)
+
 
 export { router };
