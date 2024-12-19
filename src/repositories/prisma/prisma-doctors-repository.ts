@@ -67,6 +67,16 @@ export class PrismaDoctorsRepository implements DoctorsRepository {
         return doctor
     }
 
+    async findByName(name: string) {
+        const doctor = await prisma.doctor.findFirst({
+            where: {
+                name
+            }
+        })
+
+        return doctor
+    }
+
     async findById(id: string) {
         const doctor = await prisma.doctor.findFirst({
             where: {

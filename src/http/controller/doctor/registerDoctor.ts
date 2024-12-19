@@ -17,19 +17,15 @@ export async function registerDoctorWithSpecialty(req: Request, res: Response, n
         let specialtyIdToUse = specialtyId;
 
         if (!specialtyIdToUse) {
-            // Tentar encontrar a especialidade pelo nome
             const existingSpecialty = await specialtiesRepository.findByName(specialtyName || '');
 
             if (existingSpecialty) {
-                // Se já existe, usar o ID da especialidade existente
                 specialtyIdToUse = existingSpecialty.id;
             } else {
-                // Caso não exista, criar a especialidade e pegar o ID gerado
                 const createdSpecialty = await registerSpecialtyUseCase.execute({ name: specialtyName ? specialtyName : '' });
                 specialtyIdToUse = createdSpecialty.specialty.id;
             }
         } else {
-            // Verificar se o specialtyId fornecido realmente existe
             const specialtyExists = await specialtiesRepository.findById(specialtyIdToUse);
 
             if (!specialtyExists) {
@@ -43,7 +39,6 @@ export async function registerDoctorWithSpecialty(req: Request, res: Response, n
             throw new AppError('error', 'Doctor already exists.')
         }
 
-        // Criar médico com specialtyId resolvido
         const doctor = await registerDoctorUseCase.execute({
             name,
             cpf,

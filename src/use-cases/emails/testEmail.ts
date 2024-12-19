@@ -18,7 +18,7 @@ async function testEmailService() {
     // Tenta enviar um email de teste
     try {
         const result = await emailService.sendEmail({
-            to: 'edu85godoi@gmail.com', // Coloque aqui o email que receberá o teste
+            to: 'edu-godoi@hotmail.com',
             subject: 'Teste de Envio de Email',
             text: 'Este é um email de teste enviado através do Mailtrap',
             html: `

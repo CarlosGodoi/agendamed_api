@@ -8,7 +8,6 @@ const SMTP_CONFIG = {
         user: env.USER_MAIL,
         pass: env.USER_PASS_MAIL
     },
-    debug: true,
     logger: true,
 }
 

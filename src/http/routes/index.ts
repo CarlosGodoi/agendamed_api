@@ -9,6 +9,7 @@ import { registerUserRouter } from "./user/userRegisterRoute";
 import { registerDoctorRouter } from "./doctor/registerDoctorRoute";
 import { getallSpecialtiesRouter } from "./specialty/getAllSpecialtiesRoute";
 import { getallDoctorsRouter } from "./doctor/getAllDoctorsRoute";
+import { registerAppointmentRouter } from "./appointment/registerAppointmentRoute";
 
 const router = Router();
 
@@ -23,6 +24,8 @@ router.use('/specialties', getallSpecialtiesRouter)
 
 router.use('/doctor', registerDoctorRouter)
 router.use('/doctors', getallDoctorsRouter)
+
+router.use('/appointments', registerAppointmentRouter);
 
 
 export { router };

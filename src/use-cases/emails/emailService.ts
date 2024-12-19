@@ -27,7 +27,7 @@ export class EmailService {
             }
 
             const mailOptions = {
-                from: SMTP_CONFIG.auth.user,
+                from: 'Agenda_Med <agendamed@test.com>',
                 to,
                 subject,
                 text,

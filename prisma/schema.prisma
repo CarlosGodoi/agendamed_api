@@ -66,15 +66,15 @@ model Doctor {
 }
 
 model Appointment {
-  id          String    @id @default(uuid())
-  date        DateTime
-  observation String?
-  created_at  DateTime  @default(now())
-  updated_at  DateTime?
-  patient     Patient   @relation(fields: [patientId], references: [id])
-  patientId   String
-  doctor      Doctor    @relation(fields: [doctorId], references: [id])
-  doctorId    String
+  id                  String    @id @default(uuid())
+  appointmentDateTime DateTime
+  observation         String?
+  created_at          DateTime  @default(now())
+  updated_at          DateTime?
+  patient             Patient   @relation(fields: [patientId], references: [id])
+  patientId           String
+  doctor              Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId            String
 
   @@map("appointments")
 }
