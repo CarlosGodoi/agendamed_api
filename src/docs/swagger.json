@@ -335,6 +335,43 @@
                     }
                 }
             }
+        },
+        "/appointments/register": {
+            "post": {
+                "summary": "Registrar nova consulta",
+                "tags": [
+                    "Register Appointment"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterAppointment"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Consulta registrada com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RegisterAppointment"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -499,6 +536,62 @@
                 "type": "object",
                 "required": [],
                 "properties": {}
+            },
+            "RegisterAppointment": {
+                "type": "object",
+                "required": [
+                    "appointmentDateTime",
+                    "doctorName",
+                    "patient"
+                ],
+                "properties": {
+                    "appointmentDateTime": {
+                        "type": "string",
+                        "description": "Data e Hora da consulta (formato: DD/MM/YYYY as HH:mm)",
+                        "example": "20/12/2024 as 15:00"
+                    },
+                    "observation": {
+                        "type": "string",
+                        "description": "Observações sobre a consulta"
+                    },
+                    "doctorName": {
+                        "type": "string",
+                        "description": "Nome do médico"
+                    },
+                    "patient": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "cpf",
+                            "email",
+                            "phone"
+                        ],
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Nome do paciente"
+                            },
+                            "cpf": {
+                                "type": "string",
+                                "description": "CPF do paciente (formato: XXX.XXX.XXX-XX)",
+                                "pattern": "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$",
+                                "example": "009.887.332-00"
+                            },
+                            "email": {
+                                "type": "string",
+                                "format": "email",
+                                "description": "Email do paciente",
+                                "example": "user.test@example.com"
+                            },
+                            "phone": {
+                                "type": "string",
+                                "description": "Telefone do paciente (formato: (XX) XXXXX-XXXX)",
+                                "pattern": "^\\(\\d{2}\\)\\s\\d{4,5}-\\d{4}$",
+                                "example": "(51) 99894-8909"
+                            }
+                        }
+                    }
+                }
             }
         },
         "securitySchemes": {

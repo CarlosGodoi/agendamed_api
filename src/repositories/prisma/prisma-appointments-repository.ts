@@ -57,13 +57,32 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
         };
     }
     async findById(id: string) {
-        const appointment = await prisma.appointment.findFirst({
+        const appointment = await prisma.appointment.findUnique({
             where: {
                 id
             }
         })
 
         return appointment
+    }
+
+    async findConflictingAppointment(doctorId: string, appointmentDateTime: Date) {
+        // Cria um intervalo de 1 hora para a consulta
+        const startTime = new Date(appointmentDateTime);
+        const endTime = new Date(appointmentDateTime);
+        endTime.setHours(endTime.getHours() + 1);
+
+        const conflictingAppointment = await prisma.appointment.findFirst({
+            where: {
+                doctorId,
+                appointmentDateTime: {
+                    gte: startTime,
+                    lt: endTime,
+                },
+            },
+        });
+
+        return conflictingAppointment;
     }
 
 }

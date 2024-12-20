@@ -5,6 +5,7 @@ import { AppError } from "@/utils/errors/AppError";
 import { Appointment } from "@prisma/client";
 
 interface IAppointmentsUseCaseRequest {
+    id?: string;
     appointmentDateTime: Date;
     observation?: string;
     patient: {
@@ -28,6 +29,7 @@ export class RegisterAppointmentUseCase {
     ) { }
 
     async execute({
+        id,
         appointmentDateTime,
         observation,
         patient,
@@ -37,6 +39,31 @@ export class RegisterAppointmentUseCase {
             const doctorExists = await this.doctorsRepository.findByName(doctorName);
             if (!doctorExists) {
                 throw new AppError("error", "Médico não encontrado.");
+            }
+
+            // Verifica se já existe agendamento para o mesmo médico no mesmo horário
+            const existingAppointment = await this.appointmentsRepository.findConflictingAppointment(
+                doctorExists.id,
+                appointmentDateTime
+            );
+
+            // Se encontrou uma consulta existente no mesmo horário
+            if (existingAppointment) {
+                // Se não foi fornecido um ID, é uma nova consulta e deve ser bloqueada
+                if (!id) {
+                    throw new AppError(
+                        "conflict",
+                        "Já existe uma consulta agendada para este médico neste horário."
+                    );
+                }
+
+                // Se foi fornecido um ID, verifica se a consulta encontrada é diferente da atual
+                if (existingAppointment.id !== id) {
+                    throw new AppError(
+                        "conflict",
+                        "Já existe uma consulta agendada para este médico neste horário."
+                    );
+                }
             }
 
             let patientRecord = await this.patientsRepository.findByCpf(patient.cpf);

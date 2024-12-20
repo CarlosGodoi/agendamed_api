@@ -45,4 +45,14 @@ export class InMemoryAppointmentsRepository implements AppointmentsRepository {
         return appointment || null
     }
 
+    async findConflictingAppointment(doctorId: string, appointmentDateTime: Date) {
+        const appointment = this.items.find((item) => item.doctorId === doctorId && item.appointmentDateTime === appointmentDateTime)
+
+        if (!appointment) {
+            return null
+        }
+
+        return appointment
+    }
+
 }
