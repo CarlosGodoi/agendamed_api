@@ -1,4 +1,3 @@
-import { AppointmentsRepository } from "@/repositories/appointments-repository"
 import { PatientsRepository } from "@/repositories/patients-repository"
 import { AppError } from "@/utils/errors/AppError"
 import { Appointment, Patient } from "@prisma/client"
@@ -15,7 +14,7 @@ interface IRegisterPatientUseCaseResponse {
 }
 
 export class RegisterPatientUseCase {
-    constructor(private patientsRepository: PatientsRepository, private appointmentRepository: AppointmentsRepository) { }
+    constructor(private patientsRepository: PatientsRepository) { }
 
     async execute({ name, cpf, email, phone }: IRegisterPatientUseCaseRequest): Promise<IRegisterPatientUseCaseResponse> {
         try {

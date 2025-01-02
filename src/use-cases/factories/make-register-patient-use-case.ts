@@ -4,8 +4,7 @@ import { PrismaAppointmentsRepository } from "@/repositories/prisma/prisma-appoi
 
 export function makeRegisterPatientUseCase() {
     const patientsRepository = new PrismaPatientsRespository()
-    const appointmentsRepository = new PrismaAppointmentsRepository()
-    const registerPatientUseCase = new RegisterPatientUseCase(patientsRepository, appointmentsRepository)
+    const registerPatientUseCase = new RegisterPatientUseCase(patientsRepository)
 
     return registerPatientUseCase
 }
