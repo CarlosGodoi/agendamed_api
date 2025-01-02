@@ -65,15 +65,23 @@ model Doctor {
   @@map("doctors")
 }
 
+enum AppointmentStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
 model Appointment {
-  id                  String    @id @default(uuid())
+  id                  String            @id @default(uuid())
   appointmentDateTime DateTime
+  status              AppointmentStatus @default(SCHEDULED)
   observation         String?
-  created_at          DateTime  @default(now())
+  created_at          DateTime          @default(now())
   updated_at          DateTime?
-  patient             Patient   @relation(fields: [patientId], references: [id])
+  patient             Patient           @relation(fields: [patientId], references: [id])
   patientId           String
-  doctor              Doctor    @relation(fields: [doctorId], references: [id])
+  doctor              Doctor            @relation(fields: [doctorId], references: [id])
   doctorId            String
 
   @@map("appointments")
