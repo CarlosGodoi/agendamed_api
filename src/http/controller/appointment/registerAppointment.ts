@@ -30,6 +30,7 @@ export async function registerAppointmentController(req: Request, res: Response,
             html: `
                 <h3>Olá, ${patient.name}</h3>
                 <p>Sua consulta foi agendada com sucesso!</p>
+                <p><strong>Status:</strong> Agendada</p>
                 <p><strong>Data:</strong> ${appointmentDateTime.toLocaleDateString()}</p>
                 <p><strong>Hora:</strong> ${appointmentDateTime.toLocaleTimeString()}</p>
                 <p><strong>Médico:</strong> ${doctorName}</p>

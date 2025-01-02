@@ -56,6 +56,17 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
             ...(pagination.take && { totalPage })
         };
     }
+
+    async update(id: string, data: Prisma.AppointmentUpdateInput) {
+        const appointment = await prisma.appointment.update({
+            where: {
+                id
+            },
+            data
+        })
+
+        return appointment
+    }
     async findById(id: string) {
         const appointment = await prisma.appointment.findUnique({
             where: {

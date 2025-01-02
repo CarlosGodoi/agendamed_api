@@ -10,6 +10,8 @@ import { registerDoctorRouter } from "./doctor/registerDoctorRoute";
 import { getallSpecialtiesRouter } from "./specialty/getAllSpecialtiesRoute";
 import { getallDoctorsRouter } from "./doctor/getAllDoctorsRoute";
 import { registerAppointmentRouter } from "./appointment/registerAppointmentRoute";
+import { updateAppointmentStatusRouter } from "./appointment/updateAppointmentStatusRoute";
+import { getAllPatientsRouter } from "./patient/getAllPatientsRoute";
 
 const router = Router();
 
@@ -20,12 +22,14 @@ router.use('/user/:id', getUserByIdRouter);
 router.use('/user', updateUserRouter);
 router.use('/user', deleteUserRouter);
 
+router.use('/patients', getAllPatientsRouter)
+
 router.use('/specialties', getallSpecialtiesRouter)
 
 router.use('/doctor', registerDoctorRouter)
 router.use('/doctors', getallDoctorsRouter)
 
-router.use('/appointments', registerAppointmentRouter);
+router.use('/appointments', registerAppointmentRouter, updateAppointmentStatusRouter);
 
 
 export { router };

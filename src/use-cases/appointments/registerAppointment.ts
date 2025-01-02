@@ -2,11 +2,12 @@ import { AppointmentsRepository } from "@/repositories/appointments-repository";
 import { DoctorsRepository } from "@/repositories/doctors-repository";
 import { PatientsRepository } from "@/repositories/patients-repository";
 import { AppError } from "@/utils/errors/AppError";
-import { Appointment } from "@prisma/client";
+import { Appointment, AppointmentStatus } from "@prisma/client";
 
 interface IAppointmentsUseCaseRequest {
     id?: string;
     appointmentDateTime: Date;
+    status?: AppointmentStatus;
     observation?: string;
     patient: {
         name: string;
@@ -31,6 +32,7 @@ export class RegisterAppointmentUseCase {
     async execute({
         id,
         appointmentDateTime,
+        status,
         observation,
         patient,
         doctorName,
@@ -79,6 +81,7 @@ export class RegisterAppointmentUseCase {
 
             const appointment = await this.appointmentsRepository.create({
                 appointmentDateTime,
+                status: status || "SCHEDULED",
                 doctor: {
                     connect: {
                         id: doctorExists.id,

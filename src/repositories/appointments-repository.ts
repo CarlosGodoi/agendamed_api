@@ -6,4 +6,5 @@ export interface AppointmentsRepository {
     getAll(data: IPagination): Promise<{ total: number; appointments: Appointment[]; totalPage?: number }>
     findById(id: string): Promise<Appointment | null>
     findConflictingAppointment(doctorId: string, appointmentDateTime: Date): Promise<Appointment | null>;
+    update(id: string, data: Prisma.AppointmentUpdateInput): Promise<Appointment>
 }
