@@ -372,6 +372,54 @@
                     }
                 }
             }
+        },
+        "/appointments/{id}/status": {
+            "patch": {
+                "summary": "Update status",
+                "tags": [
+                    "Appointments"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAppointmentStatus"
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do usuário",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UpdateAppointmentStatus"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -590,6 +638,19 @@
                                 "example": "(51) 99894-8909"
                             }
                         }
+                    }
+                }
+            },
+            "UpdateAppointmentStatus": {
+                "type": "object",
+                "required": [
+                    "status"
+                ],
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "format": "Status",
+                        "description": "Status da consulta"
                     }
                 }
             }
