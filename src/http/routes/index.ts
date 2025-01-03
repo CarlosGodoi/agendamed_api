@@ -12,6 +12,7 @@ import { getallDoctorsRouter } from "./doctor/getAllDoctorsRoute";
 import { registerAppointmentRouter } from "./appointment/registerAppointmentRoute";
 import { updateAppointmentStatusRouter } from "./appointment/updateAppointmentStatusRoute";
 import { getAllPatientsRouter } from "./patient/getAllPatientsRoute";
+import { getPatientByIdRouter } from "./patient/getPatientByIdRoute";
 
 const router = Router();
 
@@ -23,6 +24,7 @@ router.use('/user', updateUserRouter);
 router.use('/user', deleteUserRouter);
 
 router.use('/patients', getAllPatientsRouter)
+router.use('/patient/:id', getPatientByIdRouter);
 
 router.use('/specialties', getallSpecialtiesRouter)
 

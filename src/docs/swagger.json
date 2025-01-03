@@ -243,6 +243,73 @@
                 }
             }
         },
+        "/patients": {
+            "get": {
+                "summary": "Listagem de pacientes",
+                "tags": [
+                    "Patients"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pacientes listados com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Patients"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
+        "/patient/{id}": {
+            "get": {
+                "summary": "Listagem de paciente especifíco",
+                "tags": [
+                    "Patient"
+                ],
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "description": "ID do paciente",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Paciente listado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PatientById"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    }
+                }
+            }
+        },
         "/specialties": {
             "get": {
                 "summary": "Listagem de especialidades médicas",
@@ -547,6 +614,16 @@
                         "description": "Senha do usuário"
                     }
                 }
+            },
+            "Patients": {
+                "type": "object",
+                "required": [],
+                "properties": {}
+            },
+            "PatientById": {
+                "type": "object",
+                "required": [],
+                "properties": {}
             },
             "Specialties": {
                 "type": "object",
