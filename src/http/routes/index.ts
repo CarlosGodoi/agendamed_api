@@ -13,6 +13,7 @@ import { registerAppointmentRouter } from "./appointment/registerAppointmentRout
 import { updateAppointmentStatusRouter } from "./appointment/updateAppointmentStatusRoute";
 import { getAllPatientsRouter } from "./patient/getAllPatientsRoute";
 import { getPatientByIdRouter } from "./patient/getPatientByIdRoute";
+import { getAppointmentByIdRouter } from "./appointment/getAppointmentByIdRoute";
 
 const router = Router();
 
@@ -32,6 +33,7 @@ router.use('/doctor', registerDoctorRouter)
 router.use('/doctors', getallDoctorsRouter)
 
 router.use('/appointments', registerAppointmentRouter, updateAppointmentStatusRouter);
+router.use('/appointment', getAppointmentByIdRouter);
 
 
 export { router };

@@ -70,7 +70,7 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
     async findById(id: string) {
         const appointment = await prisma.appointment.findUnique({
             where: {
-                id
+                id: id
             }
         })
 
