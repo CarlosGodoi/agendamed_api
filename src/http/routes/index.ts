@@ -14,26 +14,31 @@ import { updateAppointmentStatusRouter } from "./appointment/updateAppointmentSt
 import { getAllPatientsRouter } from "./patient/getAllPatientsRoute";
 import { getPatientByIdRouter } from "./patient/getPatientByIdRoute";
 import { getAppointmentByIdRouter } from "./appointment/getAppointmentByIdRoute";
+import { getAllAppointmentsRouter } from "./appointment/getAllAppointments";
 
 const router = Router();
 
-router.use('/user', registerUserRouter);
-router.use('/auth', authRouter);
-router.use('/users', getAllRouter);
-router.use('/user/:id', getUserByIdRouter);
-router.use('/user', updateUserRouter);
-router.use('/user', deleteUserRouter);
+router.use("/user", registerUserRouter);
+router.use("/auth", authRouter);
+router.use("/users", getAllRouter);
+router.use("/user/:id", getUserByIdRouter);
+router.use("/user", updateUserRouter);
+router.use("/user", deleteUserRouter);
 
-router.use('/patients', getAllPatientsRouter)
-router.use('/patient/:id', getPatientByIdRouter);
+router.use("/patients", getAllPatientsRouter);
+router.use("/patient/:id", getPatientByIdRouter);
 
-router.use('/specialties', getallSpecialtiesRouter)
+router.use("/specialties", getallSpecialtiesRouter);
 
-router.use('/doctor', registerDoctorRouter)
-router.use('/doctors', getallDoctorsRouter)
+router.use("/doctor", registerDoctorRouter);
+router.use("/doctors", getallDoctorsRouter);
 
-router.use('/appointments', registerAppointmentRouter, updateAppointmentStatusRouter);
-router.use('/appointment', getAppointmentByIdRouter);
-
+router.use(
+  "/appointments",
+  registerAppointmentRouter,
+  updateAppointmentStatusRouter,
+  getAllAppointmentsRouter
+);
+router.use("/appointment", getAppointmentByIdRouter);
 
 export { router };

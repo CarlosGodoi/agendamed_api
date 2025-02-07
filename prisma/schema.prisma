@@ -45,7 +45,8 @@ model Specialty {
   id   String @id @default(uuid())
   name String @unique
 
-  doctors Doctor[]
+  doctors     Doctor[]
+  Appointment Appointment[]
 
   @@map("specialties")
 }
@@ -83,6 +84,8 @@ model Appointment {
   patientId           String
   doctor              Doctor            @relation(fields: [doctorId], references: [id])
   doctorId            String
+  specialty           Specialty         @relation(fields: [specialtyId], references: [id])
+  specialtyId         String
 
   @@map("appointments")
 }
