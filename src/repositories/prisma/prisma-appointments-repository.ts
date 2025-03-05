@@ -49,6 +49,13 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
       ...pagination,
       where,
       include: {
+        patient: {
+          select: {
+            name: true,
+            cpf: true,
+            phone: true,
+          },
+        },
         doctor: {
           select: {
             name: true,
