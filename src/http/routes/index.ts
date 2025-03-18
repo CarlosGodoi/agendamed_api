@@ -15,6 +15,7 @@ import { getAllPatientsRouter } from "./patient/getAllPatientsRoute";
 import { getPatientByIdRouter } from "./patient/getPatientByIdRoute";
 import { getAppointmentByIdRouter } from "./appointment/getAppointmentByIdRoute";
 import { getAllAppointmentsRouter } from "./appointment/getAllAppointments";
+import { getAppointmentsReportsRouter } from "./appointment/getAppointmentsReports";
 
 const router = Router();
 
@@ -37,7 +38,8 @@ router.use(
   "/appointments",
   registerAppointmentRouter,
   updateAppointmentStatusRouter,
-  getAllAppointmentsRouter
+  getAllAppointmentsRouter,
+  getAppointmentsReportsRouter
 );
 router.use("/appointment", getAppointmentByIdRouter);
 

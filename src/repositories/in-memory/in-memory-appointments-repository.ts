@@ -4,6 +4,7 @@ import { IPagination } from "../interfaces/pagination";
 
 export class InMemoryAppointmentsRepository implements AppointmentsRepository {
   public items: Appointment[] = [];
+
   async create(data: Prisma.AppointmentCreateInput) {
     const doctorId = data.doctor.connect?.id;
     const patientId = data.patient.connect?.id;
@@ -24,6 +25,7 @@ export class InMemoryAppointmentsRepository implements AppointmentsRepository {
 
     return appointment;
   }
+
   async getAll(data: IPagination) {
     const take = data.take || 10;
     const skip = data.skip || 0;
@@ -37,6 +39,44 @@ export class InMemoryAppointmentsRepository implements AppointmentsRepository {
     const appointments = this.items.slice(startIndex, endIndex);
 
     return { total, appointments, totalPage };
+  }
+
+  async getAppointmentsReports(data: IAppointmentsReports) {
+    const now = new Date();
+    const month = now.toLocaleString("default", { month: "long" });
+
+    const totalAppointmentsInMonth = this.items.filter(
+      (item) =>
+        item.appointmentDateTime.getMonth() === now.getMonth() &&
+        item.appointmentDateTime.getFullYear() === now.getFullYear()
+    ).length;
+
+    const cancelledAppointmensInMonth = this.items.filter(
+      (item) =>
+        item.appointmentDateTime.getMonth() === now.getMonth() &&
+        item.appointmentDateTime.getFullYear() === now.getFullYear() &&
+        item.status === AppointmentStatus.CANCELLED
+    ).length;
+
+    const completedAppointmentsToday = this.items.filter(
+      (item) =>
+        item.appointmentDateTime.toDateString() === now.toDateString() &&
+        item.status === AppointmentStatus.COMPLETED
+    ).length;
+
+    const cancelledAppointmentsToday = this.items.filter(
+      (item) =>
+        item.appointmentDateTime.toDateString() === now.toDateString() &&
+        item.status === AppointmentStatus.CANCELLED
+    ).length;
+
+    return {
+      month,
+      totalAppointmentsInMonth,
+      cancelledAppointmensInMonth,
+      completedAppointmentsToday,
+      cancelledAppointmentsToday,
+    };
   }
 
   async update(id: string, data: Prisma.AppointmentUpdateInput) {

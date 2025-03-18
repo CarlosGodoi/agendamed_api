@@ -1,5 +1,6 @@
 import { Appointment, Doctor, Prisma } from "@prisma/client";
 import { IPagination } from "./interfaces/pagination";
+import { IAppointmentsReportsParams } from "./prisma/prisma-appointments-repository";
 
 export interface AppointmentsRepository {
   create(data: Prisma.AppointmentCreateInput): Promise<Appointment>;
@@ -8,6 +9,9 @@ export interface AppointmentsRepository {
     appointments: Appointment[];
     totalPage?: number;
   }>;
+  getAppointmentsReports(
+    data: IAppointmentsReportsParams
+  ): Promise<IAppointmentsReportsParams>;
   findById(id: string): Promise<Appointment | null>;
   findBySpecialtyId(id: string): Promise<Doctor[] | null>;
   findConflictingAppointment(
