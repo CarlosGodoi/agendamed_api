@@ -67,7 +67,7 @@ async function doctorSeed() {
   for (const specialty of specialties) {
     await prisma.specialty.upsert({
       where: { name: specialty.name },
-      update: {},
+      update: { name: specialty.name },
       create: { name: specialty.name },
     });
   }

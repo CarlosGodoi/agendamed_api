@@ -9,19 +9,8 @@ export class GetAppointmentsReportsUseCase {
       await this.appointmentsRepository.getAppointmentsReports(filters);
 
     return {
-      month:
-        filters.month && filters.year
-          ? new Date(filters.year, filters.month - 1, 1).toLocaleString(
-              "pt-BR",
-              { month: "long", year: "numeric" }
-            )
-          : null,
-      totalAppointmentsInMonth: appointments.totalAppointmentsInMonth || 0,
-      cancelledAppointmentsInMonth:
-        appointments.cancelledAppointmentsInMonth || 0,
-      selectedDate: appointments.selectedDate,
-      completedAppointmentsToday: appointments.completedAppointmentsToday || 0,
-      cancelledAppointmentsToday: appointments.cancelledAppointmentsToday || 0,
+      year: filters.year ?? new Date().getFullYear(),
+      monthlyData: appointments.monthlyData || [],
     };
   }
 }

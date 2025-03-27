@@ -9,12 +9,10 @@ export async function getAppointmentsReportsController(
 ) {
   try {
     // Extrai parâmetros da query e converte corretamente
-    const month = req.query.month ? Number(req.query.month) : undefined;
     const year = req.query.year ? Number(req.query.year) : undefined;
-    const date = req.query.date ? String(req.query.date) : undefined;
 
     // Monta o objeto de filtros
-    const filters: IAppointmentsReportsParams = { month, year, date };
+    const filters: IAppointmentsReportsParams = { year };
 
     // Obtém o use case
     const getAppointmentsReports = makeAppointmentsReportsUseCase();

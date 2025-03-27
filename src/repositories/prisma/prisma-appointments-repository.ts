@@ -28,15 +28,19 @@ export interface IAppointmentsParamsGetAll extends IPagination {
   totalPage?: number;
 }
 
+export interface IMonthlyAppointmentsData {
+  month: number;
+  totalAppointments: number;
+  attendedAppointments: number;
+  scheduledAppointments: number;
+  cancelledAppointments: number;
+}
+
 export interface IAppointmentsReportsParams {
-  month?: number;
   year?: number;
-  date?: string;
-  selectedDate?: string;
-  totalAppointmentsInMonth?: number;
-  cancelledAppointmentsInMonth?: number;
-  completedAppointmentsToday?: number;
-  cancelledAppointmentsToday?: number;
+  monthlyData?: IMonthlyAppointmentsData[];
+  totalAppointmentsAttended?: number;
+  totalAppointmentsCanceled?: number;
 }
 
 export class PrismaAppointmentsRepository implements AppointmentsRepository {
@@ -93,83 +97,83 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
   }
 
   async getAppointmentsReports({
-    month,
     year,
-    date,
   }: IAppointmentsReportsParams): Promise<IAppointmentsReportsParams> {
-    const timeZone = "America/Sao_Paulo";
-    const now = new Date();
-
-    let startOfCurrentMonth, endOfCurrentMonth;
-    let startOfSelectedDay, endOfSelectedDay;
-
-    if (month && year) {
-      startOfCurrentMonth = startOfMonth(new Date(year, month - 1));
-      endOfCurrentMonth = endOfMonth(new Date(year, month - 1));
-    } else {
-      startOfCurrentMonth = startOfMonth(now);
-      endOfCurrentMonth = endOfMonth(now);
+    if (!year) {
+      year = new Date().getFullYear();
     }
 
-    // 🚀 CORREÇÃO AQUI 🚀
-    if (date) {
-      // Criar a data diretamente sem "T00:00:00Z"
-      const selectedDate = toZonedTime(new Date(date), timeZone);
+    const monthlyData = await Promise.all(
+      Array.from({ length: 12 }).map(async (_, index) => {
+        const month = index + 1;
+        const startOfCurrentMonth = startOfMonth(new Date(year, month - 1));
+        const endOfCurrentMonth = endOfMonth(new Date(year, month - 1));
 
-      startOfSelectedDay = startOfDay(selectedDate);
-      endOfSelectedDay = endOfDay(selectedDate);
-    } else {
-      startOfSelectedDay = startOfDay(toZonedTime(now, timeZone));
-      endOfSelectedDay = endOfDay(toZonedTime(now, timeZone));
-    }
+        const totalAppointments = await prisma.appointment.count({
+          where: {
+            appointmentDateTime: {
+              gte: startOfCurrentMonth,
+              lte: endOfCurrentMonth,
+            },
+          },
+        });
 
-    const totalAppointmentsInMonth = await prisma.appointment.count({
-      where: {
-        appointmentDateTime: {
-          gte: startOfCurrentMonth,
-          lte: endOfCurrentMonth,
-        },
-      },
-    });
+        const attendedAppointments = await prisma.appointment.count({
+          where: {
+            status: "COMPLETED",
+            appointmentDateTime: {
+              gte: startOfCurrentMonth,
+              lte: endOfCurrentMonth,
+            },
+          },
+        });
 
-    const cancelledAppointmentsInMonth = await prisma.appointment.count({
-      where: {
-        status: "CANCELLED",
-        appointmentDateTime: {
-          gte: startOfCurrentMonth,
-          lte: endOfCurrentMonth,
-        },
-      },
-    });
+        const scheduledAppointments = await prisma.appointment.count({
+          where: {
+            status: "SCHEDULED",
+            appointmentDateTime: {
+              gte: startOfCurrentMonth,
+              lte: endOfCurrentMonth,
+            },
+          },
+        });
 
-    const completedAppointmentsToday = await prisma.appointment.count({
-      where: {
-        status: "COMPLETED",
-        appointmentDateTime: {
-          gte: startOfSelectedDay,
-          lte: endOfSelectedDay,
-        },
-      },
-    });
+        const cancelledAppointments = await prisma.appointment.count({
+          where: {
+            status: "CANCELLED",
+            appointmentDateTime: {
+              gte: startOfCurrentMonth,
+              lte: endOfCurrentMonth,
+            },
+          },
+        });
 
-    const cancelledAppointmentsToday = await prisma.appointment.count({
-      where: {
-        status: "CANCELLED",
-        appointmentDateTime: {
-          gte: startOfSelectedDay,
-          lte: endOfSelectedDay,
-        },
-      },
-    });
+        return {
+          month,
+          totalAppointments,
+          attendedAppointments,
+          scheduledAppointments,
+          cancelledAppointments,
+        };
+      })
+    );
+
+    // Agora somamos os valores de cada mês para obter os totais
+    const totalAppointmentsAttended = monthlyData.reduce(
+      (acc, month) => acc + month.attendedAppointments,
+      0
+    );
+
+    const totalAppointmentsCanceled = monthlyData.reduce(
+      (acc, month) => acc + month.cancelledAppointments,
+      0
+    );
 
     return {
-      month,
       year,
-      selectedDate: format(startOfSelectedDay, "dd/MM/yyyy"),
-      totalAppointmentsInMonth,
-      cancelledAppointmentsInMonth,
-      completedAppointmentsToday,
-      cancelledAppointmentsToday,
+      monthlyData,
+      totalAppointmentsAttended,
+      totalAppointmentsCanceled,
     };
   }
 
