@@ -46,50 +46,85 @@ async function userSeed() {
   console.log({ "Admin =>": Admin, "Doctor =>": Doctor, Operator: Operator });
 }
 
-userSeed()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (error) => {
-    console.error(error);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
-
-async function doctorSeed() {
+async function specialtySeed() {
   const specialties = [
-    { name: "Pediatra" },
-    { name: "Ortopedista" },
-    { name: "Cardiologista" },
+    { name: "Ortopedia e traumatologia" },
+    { name: "Cardiologia" },
+    { name: "Gastroenterologia" },
+    { name: "Geriatria" },
+    { name: "Infectologia" },
+    { name: "Neurologia" },
+    { name: "Nutrologia" },
+    { name: "Oftalmologia" },
+    { name: "Pneumologia" },
+    { name: "Otorrinolaringologia" },
+    { name: "Nefrologia" },
+    { name: "Reumatologia" },
+    { name: "Urologia" },
+    { name: "Dermatologia" },
+    { name: "Endocrinologia" },
+    { name: "Hematologia" },
+    { name: "Oncologia" },
+    { name: "Pediatria" },
+    { name: "Psiquiatria" },
   ];
 
   // Criar especialidades primeiro
   for (const specialty of specialties) {
     await prisma.specialty.upsert({
       where: { name: specialty.name },
-      update: { name: specialty.name },
+      update: {},
       create: { name: specialty.name },
     });
   }
+}
+
+async function doctorSeed() {
+  // Primeiro, garantir que as especialidades existam
+  await specialtySeed();
 
   const doctors = [
     {
       name: "José Alfredo",
       cpf: "76400922300",
       crm: "CRM/SP 13245",
-      specialty: "Pediatra",
+      specialty: "Pediatria",
     },
     {
       name: "Maria Clara",
       cpf: "67400922301",
       crm: "CRM/RS 47866",
-      specialty: "Ortopedista",
+      specialty: "Ortopedia e traumatologia",
     },
     {
       name: "João Paulo",
       cpf: "68400922302",
       crm: "CRM/RJ 43329",
-      specialty: "Cardiologista",
+      specialty: "Cardiologia",
+    },
+    {
+      name: "Ricardo Silva",
+      cpf: "78600591233",
+      crm: "CRM/MT 55911",
+      specialty: "Cardiologia",
+    },
+    {
+      name: "Miriam Santos",
+      cpf: "01238872300",
+      crm: "CRM/ES 01253",
+      specialty: "Pneumologia",
+    },
+    {
+      name: "Cristina Amorin",
+      cpf: "11397756321",
+      crm: "CRM/SP 87331",
+      specialty: "Gastroenterologia",
+    },
+    {
+      name: "Rodrigo Alvarenga",
+      cpf: "00588201533",
+      crm: "CRM/TO 19207",
+      specialty: "Psiquiatria",
     },
   ];
 
@@ -105,7 +140,13 @@ async function doctorSeed() {
 
     await prisma.doctor.upsert({
       where: { cpf: doctor.cpf },
-      update: {},
+      update: {
+        name: doctor.name,
+        crm: doctor.crm,
+        specialty: {
+          connect: { id: specialty.id },
+        },
+      },
       create: {
         name: doctor.name,
         cpf: doctor.cpf,
@@ -118,42 +159,20 @@ async function doctorSeed() {
     });
   }
 
-  console.log("Doctors and specialties seeded successfully");
+  console.log("Doctors seeded successfully");
 }
 
-doctorSeed()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (error) => {
-    console.error(error);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
-
 async function appointmentSeed() {
-  const specialties = [
-    { id: "1234abd43", name: "Pediatra" },
-    { id: "9847ythe23", name: "Ortopedista" },
-    { id: "7463tbs5242", name: "Cardiologista" },
-  ];
-
-  // Criando ou atualizando especialidades
-  for (const specialty of specialties) {
-    await prisma.specialty.upsert({
-      where: { name: specialty.name },
-      update: {},
-      create: { name: specialty.name },
-    });
-  }
+  // Garantir que especialidades e médicos existam
+  await specialtySeed();
+  await doctorSeed();
 
   const appointments = [
     {
       appointmentDateTime: new Date("2025-03-01T08:00:00Z"),
-      observation:
-        "Cancelamentos serão realizados somente com 24hs de antecedência.",
+      observation: "Cancelamentos serão realizados somente com 24hs de antecedência.",
       doctorName: "Maria Clara",
-      specialtyName: "Pediatra",
+      specialtyName: "Ortopedia e traumatologia",
       patient: {
         name: "Roberto Sincero",
         cpf: "009.465.123-77",
@@ -166,7 +185,7 @@ async function appointmentSeed() {
       observation:
         "Cancelamentos serão realizados somente com 24hs de antecedência.",
       doctorName: "José Alfredo",
-      specialtyName: "Ortopedista",
+      specialtyName: "Pediatria",
       patient: {
         name: "Aldair Tiringa",
         cpf: "142.567.832-22",
@@ -178,8 +197,8 @@ async function appointmentSeed() {
       appointmentDateTime: new Date("2025-03-13T08:00:00Z"),
       observation:
         "Cancelamentos serão realizados somente com 24hs de antecedência.",
-      doctorName: "Maria Clara",
-      specialtyName: "Ortopedista",
+      doctorName: "José Alfredo",
+      specialtyName: "Pediatria",
       patient: {
         name: "Rosalva Silva",
         cpf: "009.465.123-77",
@@ -191,8 +210,8 @@ async function appointmentSeed() {
       appointmentDateTime: new Date("2025-02-18T08:00:00Z"),
       observation:
         "Cancelamentos serão realizados somente com 24hs de antecedência.",
-      doctorName: "Maria Clara",
-      specialtyName: "Ortopedista",
+      doctorName: "Cristina Amorin",
+      specialtyName: "Gastroenterologia",
       patient: {
         name: "Ivan Mors",
         cpf: "478.332.123-23",
@@ -205,37 +224,15 @@ async function appointmentSeed() {
       observation:
         "Cancelamentos serão realizados somente com 24hs de antecedência.",
       doctorName: "João Paulo",
-      specialtyName: "Cardiologista",
+      specialtyName: "Cardiologia",
       patient: {
         name: "Alcildes Norberto",
         cpf: "312.663.002-89",
         email: "alcides.norberto@gmail.com",
         phone: "(51) 99563-0922",
       },
-    },
+    }
   ];
-
-  const doctors = [
-    { id: "1a2b3c4d", name: "Maria Clara", cpf: "12345678900" },
-    { id: "2b3c4d5e", name: "José Alfredo", cpf: "09876543211" },
-    { id: "456yurt#5e", name: "João Paulo", cpf: "68400922302" },
-  ];
-
-  for (const doctor of doctors) {
-    await prisma.doctor.upsert({
-      where: { cpf: doctor.cpf },
-      update: {},
-      create: {
-        id: doctor.id,
-        name: doctor.name,
-        cpf: doctor.cpf,
-        crm: "CRM/SP 12345",
-        specialty: {
-          connect: { name: "Pediatra" },
-        },
-      },
-    });
-  }
 
   for (const appointment of appointments) {
     // Buscar a especialidade correta
@@ -295,13 +292,23 @@ async function appointmentSeed() {
   console.log("Appointments seeded successfully");
 }
 
-// Execute the function
-appointmentSeed()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (error) => {
+async function main() {
+  try {
+    await userSeed();
+    await specialtySeed();
+    await doctorSeed();
+    await appointmentSeed();
+  } catch (error) {
     console.error(error);
+    process.exit(1);
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+main()
+  .catch(async (e) => {
+    console.error(e);
     await prisma.$disconnect();
     process.exit(1);
   });
