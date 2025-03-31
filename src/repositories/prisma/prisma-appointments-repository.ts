@@ -169,6 +169,13 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
       0
     );
 
+    console.log('Response =>',
+      year,
+      monthlyData,
+      totalAppointmentsAttended,
+      totalAppointmentsCanceled);
+    
+
     return {
       year,
       monthlyData,
