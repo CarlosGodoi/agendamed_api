@@ -22,12 +22,12 @@ const router = Router();
 router.use("/user", registerUserRouter);
 router.use("/auth", authRouter);
 router.use("/users", getAllRouter);
-router.use("/user/:id", getUserByIdRouter);
+router.use("/user", getUserByIdRouter);
 router.use("/user", updateUserRouter);
 router.use("/user", deleteUserRouter);
 
 router.use("/patients", getAllPatientsRouter);
-router.use("/patient/:id", getPatientByIdRouter);
+router.use("/patient", getPatientByIdRouter);
 
 router.use("/specialties", getallSpecialtiesRouter);
 
