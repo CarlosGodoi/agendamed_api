@@ -3,6 +3,7 @@ import { IPagination } from "../interfaces/pagination";
 import { PatientsRepository } from "../patients-repository";
 import { prisma } from "@/lib/prisma";
 import { AppError } from "@/utils/errors/AppError";
+import { IUpdatedPatientDTO } from "../dto/patient-dto";
 
 const Pagination = (skip: number, take: number) => {
   const calcSkip = (skip - 1) * take;
@@ -59,6 +60,7 @@ export class PrismaPatientsRespository implements PatientsRepository {
       ...(pagination.take && { totalPage }),
     };
   }
+
   async findByCpf(cpf: string) {
     const patient = await prisma.patient.findFirst({
       where: {
@@ -68,6 +70,7 @@ export class PrismaPatientsRespository implements PatientsRepository {
 
     return patient;
   }
+
   async findById(id: string) {
     const patient = await prisma.patient.findFirst({
       where: {
@@ -77,6 +80,23 @@ export class PrismaPatientsRespository implements PatientsRepository {
 
     return patient;
   }
+
+  async update(data: IUpdatedPatientDTO) {
+    const patient = await prisma.patient.update({
+      where: {
+        id: data.id ? data.id : "",
+      },
+      data: {
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        updated_at: new Date(),
+      },
+    });
+
+    return patient;
+  }
+
   async delete(id: string) {
     const patient = await prisma.patient.findUnique({
       where: {
