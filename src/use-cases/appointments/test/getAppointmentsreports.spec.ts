@@ -1,14 +1,16 @@
 import { AppointmentsRepository } from "@/repositories/appointments-repository";
+import { DoctorsRepository } from "@/repositories/doctors-repository";
 import { PatientsRepository } from "@/repositories/patients-repository";
-import { beforeEach, expect, describe, it } from "vitest";
+import { SpecialtiesRepository } from "@/repositories/specialty-repository";
+import { describe, it, expect, beforeEach } from "vitest";
 import { RegisterAppointmentUseCase } from "../registerAppointment";
 import { GetAllAppointmentsUseCase } from "../getAllAppointments";
 import { InMemoryAppointmentsRepository } from "@/repositories/in-memory/in-memory-appointments-repository";
-import { DoctorsRepository } from "@/repositories/doctors-repository";
-import { SpecialtiesRepository } from "@/repositories/specialty-repository";
 import { InMemoryDoctorsRepository } from "@/repositories/in-memory/in-memory-doctors-repository";
 import { InMemoryPatientsRepository } from "@/repositories/in-memory/in-memory-patients-repository";
 import { InMemorySpecialtiesRepository } from "@/repositories/in-memory/in-memory-specialties-repository";
+import { GetAppointmentsReportsUseCase } from "../getAppointmentsReports";
+import { AppointmentStatus } from "@prisma/client";
 
 let appointmentsRepository: AppointmentsRepository;
 let doctorsRepository: DoctorsRepository;
@@ -16,8 +18,9 @@ let patientsRepository: PatientsRepository;
 let specialtiesRepository: SpecialtiesRepository;
 let sut: RegisterAppointmentUseCase;
 let getAllAppointmentsUseCase: GetAllAppointmentsUseCase;
+let getAppointmentsReportsUseCase: GetAppointmentsReportsUseCase;
 
-describe("GetAllPatients Use Case", () => {
+describe("GetAppointmentsReports Use Case", () => {
   beforeEach(() => {
     appointmentsRepository = new InMemoryAppointmentsRepository();
     doctorsRepository = new InMemoryDoctorsRepository();
@@ -32,9 +35,12 @@ describe("GetAllPatients Use Case", () => {
     getAllAppointmentsUseCase = new GetAllAppointmentsUseCase(
       appointmentsRepository
     );
+    getAppointmentsReportsUseCase = new GetAppointmentsReportsUseCase(
+      appointmentsRepository
+    );
   });
 
-  it("should be able to list patients", async () => {
+  it("should be able to list appointments reports", async () => {
     const { id: specialtyId } = await specialtiesRepository.create({
       name: "specialty001",
     });
@@ -46,7 +52,7 @@ describe("GetAllPatients Use Case", () => {
       specialty: { connect: { id: specialtyId } },
     });
 
-    await sut.execute({
+    const appointment1 = await sut.execute({
       doctorName: doctor.name,
       specialtyId: specialtyId,
       appointmentDateTime: new Date(),
@@ -58,7 +64,7 @@ describe("GetAllPatients Use Case", () => {
       },
     });
 
-    await sut.execute({
+    const appointment2 = await sut.execute({
       doctorName: doctor.name,
       specialtyId: specialtyId,
       appointmentDateTime: new Date(),
@@ -70,7 +76,7 @@ describe("GetAllPatients Use Case", () => {
       },
     });
 
-    await sut.execute({
+    const appointment3 = await sut.execute({
       doctorName: doctor.name,
       specialtyId: specialtyId,
       appointmentDateTime: new Date(),
@@ -82,14 +88,31 @@ describe("GetAllPatients Use Case", () => {
       },
     });
 
-    const appointments = await getAllAppointmentsUseCase.execute({
-      take: 2,
-      skip: 1,
-      appointments: [],
-      total: 0,
+    // Atualize o status do terceiro agendamento para CANCELLED
+    await appointmentsRepository.update(appointment3.appointment.id, {
+      status: AppointmentStatus.CANCELLED,
     });
 
-    expect(appointments.total).toBe(3);
-    expect(appointments.appointments.length).toBe(2);
+    // Agora execute o relatório
+    const reports = await getAppointmentsReportsUseCase.execute({
+      year: new Date().getFullYear(),
+    });
+
+    // Verificar se o array monthlyData existe e tem comprimento 1
+    expect(reports.monthlyData?.length).toBe(1);
+
+    // Verificar os valores específicos dos relatórios
+    expect(reports.monthlyData?.[0].totalAppointments).toBe(3);
+    expect(reports.monthlyData?.[0].scheduledAppointments).toBe(2);
+    expect(reports.monthlyData?.[0].cancelledAppointments).toBe(1);
+    expect(reports.monthlyData?.[0].attendedAppointments).toBe(0);
+
+    // Verificar os totais gerais
+    expect(reports.totalAppointmentsAttended).toBe(0);
+    expect(reports.totalAppointmentsCanceled).toBe(1);
+
+    // Verificar o mês atual
+    const currentMonth = new Date().getMonth();
+    expect(reports.monthlyData?.[0].month).toBe(currentMonth);
   });
 });
