@@ -1,6 +1,10 @@
 import { Prisma, Appointment, AppointmentStatus, Doctor } from "@prisma/client";
 import { AppointmentsRepository } from "../appointments-repository";
 import { IPagination } from "../interfaces/pagination";
+import {
+  IAppointmentsReportsParams,
+  IMonthlyAppointmentsData,
+} from "../prisma/prisma-appointments-repository";
 
 export class InMemoryAppointmentsRepository implements AppointmentsRepository {
   public items: Appointment[] = [];
@@ -41,42 +45,69 @@ export class InMemoryAppointmentsRepository implements AppointmentsRepository {
     return { total, appointments, totalPage };
   }
 
-  async getAppointmentsReports(data: IAppointmentsReports) {
+  async getAppointmentsReports(
+    data: IAppointmentsReportsParams
+  ): Promise<IAppointmentsReportsParams> {
     const now = new Date();
-    const month = now.toLocaleString("default", { month: "long" });
 
-    const totalAppointmentsInMonth = this.items.filter(
-      (item) =>
-        item.appointmentDateTime.getMonth() === now.getMonth() &&
-        item.appointmentDateTime.getFullYear() === now.getFullYear()
+    const year = data.year || now.getFullYear();
+    const currentMonth = now.getMonth();
+
+    // Filtrar appointments pelo ano especificado
+    const appointmentsInYear = this.items.filter(
+      (item) => item.appointmentDateTime.getFullYear() === year
+    );
+
+    // Preparar dados mensais (exemplo para o mês atual)
+    const totalAppointmentsInMonth = appointmentsInYear.filter(
+      (item) => item.appointmentDateTime.getMonth() === currentMonth
     ).length;
 
-    const cancelledAppointmensInMonth = this.items.filter(
+    const attendedAppointmentsInMonth = appointmentsInYear.filter(
       (item) =>
-        item.appointmentDateTime.getMonth() === now.getMonth() &&
-        item.appointmentDateTime.getFullYear() === now.getFullYear() &&
-        item.status === AppointmentStatus.CANCELLED
-    ).length;
-
-    const completedAppointmentsToday = this.items.filter(
-      (item) =>
-        item.appointmentDateTime.toDateString() === now.toDateString() &&
+        item.appointmentDateTime.getMonth() === currentMonth &&
         item.status === AppointmentStatus.COMPLETED
     ).length;
 
-    const cancelledAppointmentsToday = this.items.filter(
+    const scheduledAppointmentsInMonth = appointmentsInYear.filter(
       (item) =>
-        item.appointmentDateTime.toDateString() === now.toDateString() &&
+        item.appointmentDateTime.getMonth() === currentMonth &&
+        item.status === AppointmentStatus.SCHEDULED
+    ).length;
+
+    const cancelledAppointmentsInMonth = appointmentsInYear.filter(
+      (item) =>
+        item.appointmentDateTime.getMonth() === currentMonth &&
         item.status === AppointmentStatus.CANCELLED
     ).length;
 
-    return {
-      month,
-      totalAppointmentsInMonth,
-      cancelledAppointmensInMonth,
-      completedAppointmentsToday,
-      cancelledAppointmentsToday,
+    // Estatísticas gerais para o ano
+    const totalAppointmentsAttended = appointmentsInYear.filter(
+      (item) => item.status === AppointmentStatus.COMPLETED
+    ).length;
+
+    const totalAppointmentsCanceled = appointmentsInYear.filter(
+      (item) => item.status === AppointmentStatus.CANCELLED
+    ).length;
+
+    // Criar objeto mensal para o mês atual
+    const monthlyData: IMonthlyAppointmentsData = {
+      month: currentMonth,
+      totalAppointments: totalAppointmentsInMonth,
+      attendedAppointments: attendedAppointmentsInMonth,
+      scheduledAppointments: scheduledAppointmentsInMonth,
+      cancelledAppointments: cancelledAppointmentsInMonth,
     };
+
+    // Montar o relatório final
+    const report: IAppointmentsReportsParams = {
+      year: year,
+      monthlyData: [monthlyData],
+      totalAppointmentsAttended: totalAppointmentsAttended,
+      totalAppointmentsCanceled: totalAppointmentsCanceled,
+    };
+
+    return report;
   }
 
   async update(id: string, data: Prisma.AppointmentUpdateInput) {

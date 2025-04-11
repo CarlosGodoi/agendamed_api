@@ -1,4 +1,3 @@
-import { app } from "@/config/app";
 import { PrismaClient } from "@prisma/client";
 import { hash } from "bcrypt";
 
@@ -170,7 +169,8 @@ async function appointmentSeed() {
   const appointments = [
     {
       appointmentDateTime: new Date("2025-03-01T08:00:00Z"),
-      observation: "Cancelamentos serão realizados somente com 24hs de antecedência.",
+      observation:
+        "Cancelamentos serão realizados somente com 24hs de antecedência.",
       doctorName: "Maria Clara",
       specialtyName: "Ortopedia e traumatologia",
       patient: {
@@ -231,7 +231,7 @@ async function appointmentSeed() {
         email: "alcides.norberto@gmail.com",
         phone: "(51) 99563-0922",
       },
-    }
+    },
   ];
 
   for (const appointment of appointments) {
@@ -306,9 +306,8 @@ async function main() {
   }
 }
 
-main()
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+main().catch(async (e) => {
+  console.error(e);
+  await prisma.$disconnect();
+  process.exit(1);
+});

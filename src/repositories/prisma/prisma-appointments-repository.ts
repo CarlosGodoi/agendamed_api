@@ -51,6 +51,7 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
 
     return appointment;
   }
+
   async getAll({
     take,
     skip,
@@ -169,12 +170,13 @@ export class PrismaAppointmentsRepository implements AppointmentsRepository {
       0
     );
 
-    console.log('Response =>',
+    console.log(
+      "Response =>",
       year,
       monthlyData,
       totalAppointmentsAttended,
-      totalAppointmentsCanceled);
-    
+      totalAppointmentsCanceled
+    );
 
     return {
       year,
