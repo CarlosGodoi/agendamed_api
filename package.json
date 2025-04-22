@@ -19,8 +19,8 @@
     "test:watch": "vitest",
     "test:email": "ts-node src/use-cases/emails/testEmail.ts",
     "build": "tsup src --out-dir dist && cp -r src/{@types,docs,env,http,lib,repositories,use-cases,utils} dist/",
-    "build_only": "tsc && tsc-alias",
-    "build_test": "tsc && tsc-alias && prisma migrate deploy"
+    "build_render": "tsup src --out-dir dist && echo '✅ Build via tsup concluído'",
+    "build_prod": "tsc && tsc-alias && prisma migrate deploy"
   },
   "author": "Carlos Eduardo Godoi",
   "license": "MIT",
