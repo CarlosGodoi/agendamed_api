@@ -1,86 +1,117 @@
-# Sistema para agendamentos de consultas
+# Sistema para Agendamento de Consultas (AgendaMed API)
 
-## Descrição da API
+## Descrição
 
-Esta API foi desenvolvida para gerenciar agendamentos de consultas médicas. O objetivo principal é facilitar o processo de agendamento, permitindo que usuários se cadastrem, autentiquem e realizem agendamentos de forma eficiente. A API oferece funcionalidades para gerenciar médicos, especialidades e consultas, garantindo uma experiência fluida para os usuários.
+AgendaMed API é uma API REST desenvolvida para gerenciar agendamentos de consultas médicas. Ela centraliza o cadastro de usuários, médicos, especialidades e o fluxo de marcação, atualização e cancelamento de consultas, com controle de permissões por perfil (admin, operador, usuário).
 
-## Funcionalidades
+## Objetivo
 
-- Cadastro de usuários
-- Autenticação de usuários
-- Gerenciamento de perfis de usuários
-- Cadastro e gerenciamento de especialidades médicas
-- Cadastro e gerenciamento de médicos
-- Agendamento e gerenciamento de consultas
-- Listagem de usuários, consultas e especialidades
-- Busca de consultas por nome e CPF
-- Atualização e cancelamento de consultas
+Fornecer uma interface de backend simples e segura para aplicações cliente (web, mobile) realizarem operações relacionadas a consultas médicas, com persistência em Postgres e autenticação via JWT.
 
-## Instalação e Uso
+## Funcionalidades principais
 
-Para instalar e utilizar a API, siga os passos abaixo:
+- Cadastro e autenticação de usuários
+- Gerenciamento de perfis de usuário (obter perfil do usuário logado)
+- Cadastro e listagem de especialidades médicas
+- Cadastro, listagem e gerenciamento de médicos
+- Agendamento, listagem, busca (por nome e CPF), atualização e cancelamento de consultas
+- Paginação padrão nas listas (10 itens por página)
 
-1. Clone o repositório:
-   ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd agendamed_api
-   ```
+## Tecnologias
+
+- Node.js + TypeScript
+- Vite (frontend relacionado; este repositório contém a API e referências ao front-end)
+- Prisma ORM + PostgreSQL
+- JWT para autenticação
+
+## Instalação (local)
+
+1. Clone o repositório e acesse a pasta do projeto:
+
+```bash
+git clone <URL_DO_REPOSITORIO>
+cd agendamed_api
+```
+
 2. Instale as dependências:
-   ```bash
-   npm ci
-   ```
-## Variáveis de Ambiente Backend
-
-Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
-
-`APP_HOST`
-`DATABASE_URL`
-`NODE_ENV`
-`JWT_SECRET`
-`JWT_REFRESH_SECRET`
-`PORT`
-
-## Criando container Docker
-
-3. Para criação do container no docker para o banco de dados Postgres, rode o seguinte comando
 
 ```bash
-  docker compose up
+npm ci
 ```
 
-## Criando migrations
+3. Crie um arquivo `.env` na raiz com as variáveis listadas abaixo.
 
-4. Após a criação do container execute as migrations, rode o seguinte comando
+4. Inicie o banco de dados (Docker Compose):
 
 ```bash
-  npx prisma migrate dev
+docker compose up -d
 ```
 
-## Para Executar o programa pela primeira vez a API
-
-Instale as depêndencias do projeto, rode o seguinte comando
-
-Iniciando o projeto, rode o seguinte comando
+5. Rode as migrations do Prisma (aplica alterações no banco):
 
 ```bash
-  npm run dev
+npx prisma migrate dev
 ```
 
-## Variáveis de Ambiente Front-End
+6. Inicie a API em modo de desenvolvimento:
 
-Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
+```bash
+npm run dev
+```
 
-`VITE_API_BASE_URL`
+Observação: se for a primeira execução e houver um script de seed, execute-o após as migrations conforme sua configuração local.
 
-## Demonstração
+## Variáveis de ambiente (Backend)
 
-agendamed-front.vercel.app
+Adicione as seguintes variáveis no arquivo `.env`:
 
-## Licença
+- APP_HOST
+- DATABASE_URL
+- NODE_ENV
+- JWT_SECRET
+- JWT_REFRESH_SECRET
+- PORT
 
-[MIT](https://choosealicense.com/licenses/mit/)
+## Variáveis de ambiente (Front-end)
 
-# React + TypeScript + Vite
+Se estiver usando o front-end separado, configure no front-end (.env) a variável:
+
+- VITE_API_BASE_URL
+
+## Docker (Banco de Dados)
+
+O projeto inclui um `docker-compose.yml` para orquestrar o Postgres. Para levantar o serviço de banco localmente:
+
+```bash
+docker compose up -d
+```
+
+Para remover os containers:
+
+```bash
+docker compose down
+```
+
+## Migrations e seed
+
+Após o banco subir, aplique as migrations:
+
+```bash
+npx prisma migrate dev
+```
+
+Se houver um script de seed (ver `prisma/seed.ts`), execute conforme sua configuração do Prisma (por exemplo `npx prisma db seed`).
+
+## Scripts úteis
+
+- `npm run dev` — inicia a API em modo desenvolvimento
+- `npm run build` — compila o projeto (se disponível)
+- `npm start` — inicia a aplicação em modo produção (se disponível)
+
+## Documentação da API
+
+Endpoints e especificações podem ser encontradas em `src/docs/swagger.json`.
+
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
@@ -113,6 +144,10 @@ Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICEN
 - [x] A senha do usuário dever estar criptografada
 - [x] As senha devem conter mais de 6 digitos e devem possuir letras, numeros e caracteres especiais
 - [x] Utilizar JWT como forma de autenticação
-- [x] Os Dados devem ser persistidos em banco postgres
+- [x] Os Dados devem ser persistidos em banco Postgres
 - [x] Todas as listas de dados precisam estar paginadas com 10 itens por página
+
+## Contato
+
+Para dúvidas ou contribuições abra uma issue ou PR no repositório.
 
