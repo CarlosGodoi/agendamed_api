@@ -27,18 +27,60 @@ Para instalar e utilizar a API, siga os passos abaixo:
    ```
 2. Instale as dependências:
    ```bash
-   npm install
+   npm ci
    ```
-3. Configure o banco de dados no arquivo `.env`.
-4. Execute as migrações:
-   ```bash
-   npx prisma migrate dev
-   ```
-5. Inicie o servidor:
-   ```bash
-   npm run dev
-   ```
+## Variáveis de Ambiente Backend
 
+Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
+
+`APP_HOST`
+`DATABASE_URL`
+`NODE_ENV`
+`JWT_SECRET`
+`JWT_REFRESH_SECRET`
+`PORT`
+
+## Criando container Docker
+
+3. Para criação do container no docker para o banco de dados Postgres, rode o seguinte comando
+
+```bash
+  docker compose up
+```
+
+## Criando migrations
+
+4. Após a criação do container execute as migrations, rode o seguinte comando
+
+```bash
+  npx prisma migrate dev
+```
+
+## Para Executar o programa pela primeira vez a API
+
+Instale as depêndencias do projeto, rode o seguinte comando
+
+Iniciando o projeto, rode o seguinte comando
+
+```bash
+  npm run dev
+```
+
+## Variáveis de Ambiente Front-End
+
+Para rodar esse projeto, você vai precisar adicionar as seguintes variáveis de ambiente no seu .env
+
+`VITE_API_BASE_URL`
+
+## Demonstração
+
+agendamed-front.vercel.app
+
+## Licença
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
+# React + TypeScript + Vite
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
@@ -73,3 +115,4 @@ Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICEN
 - [x] Utilizar JWT como forma de autenticação
 - [x] Os Dados devem ser persistidos em banco postgres
 - [x] Todas as listas de dados precisam estar paginadas com 10 itens por página
+
