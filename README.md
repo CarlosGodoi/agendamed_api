@@ -7,20 +7,20 @@
 - [x] Deve ser possível obter o perfil de um usuário logado
 - [x] Deve ser possível cadastrar a especialidade dos médicos
 - [x] Deve ser possível cadastrar um médico
-- [] Deve ser possível cadastrar uma consulta
+- [x] Deve ser possível cadastrar uma consulta
 - [x] Deve ser possível listar todos usuários cadastrados
-- [] Deve ser possível listar as consultas
+- [x] Deve ser possível listar as consultas
 - [x] Deve ser possível listar as especialidades
-- [] Deve ser possível listar os médicos
-- [] Deve ser possível buscar consultas (por nome e cpf)
-- [] Deve ser possível atualizar os dados das consultas
-- [] Deve ser possível excluir/cancelar uma consulta
+- [x] Deve ser possível listar os médicos
+- [x] Deve ser possível buscar consultas (por nome e cpf)
+- [x] Deve ser possível atualizar os dados das consultas
+- [x] Deve ser possível excluir/cancelar uma consulta
 
 ## RNs (Regras de negócio)
 
 - [x] Usuário não pode se cadastrar com email duplicado
-- [] Somente usuário operador pode cadastrar consultas, especialidades e médicos
-- [] Somente usuário operador pode desabilitar/cancelar consultas
+- [x] Somente usuário operador pode cadastrar consultas, especialidades e médicos
+- [x] Somente usuário operador pode desabilitar/cancelar consultas
 - [x] Somente usuários admin podem cadastrar operadores e admins.
 
 ## RNFs (Requisitos não-funcionais)
