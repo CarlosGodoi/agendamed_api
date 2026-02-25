@@ -1,5 +1,48 @@
 # Sistema para agendamentos de consultas
 
+## Descrição da API
+
+Esta API foi desenvolvida para gerenciar agendamentos de consultas médicas. O objetivo principal é facilitar o processo de agendamento, permitindo que usuários se cadastrem, autentiquem e realizem agendamentos de forma eficiente. A API oferece funcionalidades para gerenciar médicos, especialidades e consultas, garantindo uma experiência fluida para os usuários.
+
+## Funcionalidades
+
+- Cadastro de usuários
+- Autenticação de usuários
+- Gerenciamento de perfis de usuários
+- Cadastro e gerenciamento de especialidades médicas
+- Cadastro e gerenciamento de médicos
+- Agendamento e gerenciamento de consultas
+- Listagem de usuários, consultas e especialidades
+- Busca de consultas por nome e CPF
+- Atualização e cancelamento de consultas
+
+## Instalação e Uso
+
+Para instalar e utilizar a API, siga os passos abaixo:
+
+1. Clone o repositório:
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   cd agendamed_api
+   ```
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Configure o banco de dados no arquivo `.env`.
+4. Execute as migrações:
+   ```bash
+   npx prisma migrate dev
+   ```
+5. Inicie o servidor:
+   ```bash
+   npm run dev
+   ```
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
 ## RFs (Requisitos funcionais)
 
 - [x] Deve ser possível se cadastrar na aplicação
